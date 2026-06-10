@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(curl -s http://localhost:5176)",
+      "Bash(curl -s \"http://localhost:5176/src/App.jsx\")",
+      "Bash(curl -s \"http://localhost:5176/src/pages/Home.jsx\")",
+      "Bash(curl -s \"http://localhost:5176/src/pages/Courses.jsx\")",
+      "Bash(curl -s \"http://localhost:5176/src/pages/Lesson.jsx\")",
+      "Bash(open *)",
+      "Bash(npm install *)",
+      "Bash(curl -s \"http://localhost:5176/src/Components/DemoSection.jsx\")",
+      "Bash(curl -s \"http://localhost:5176/src/Components/Hero.jsx\")",
+      "Bash(curl -s \"http://localhost:5176/src/hooks/useReveal.js\")",
+      "Bash(curl -s \"http://localhost:5176/src/Components/LessonPage.jsx\")",
+      "Bash(npx vite *)",
+      "Bash(node *)"
+    ]
+  }
+}
