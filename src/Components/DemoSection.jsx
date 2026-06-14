@@ -231,7 +231,7 @@ function Flashcard() {
           {/* Back */}
           <div className="flashcard-face flashcard-back" style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-            background: 'var(--maroon-dim)', borderRadius: 12,
+            background: 'var(--surface)', borderRadius: 12,
             border: '1.5px solid var(--maroon)', gap: 10, padding: '20px 24px', textAlign: 'center',
           }}>
             <span style={{ fontSize: 11, color: 'var(--maroon)', fontWeight: 700, letterSpacing: 0.5 }}>التعريف</span>

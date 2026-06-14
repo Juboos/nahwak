@@ -1,4 +1,49 @@
-export default function Hero({ onLesson }) {
+import { useState, useEffect } from 'react'
+import { UNITS } from '../data/courseData'
+import { UNITS2 } from '../data/courseData2'
+import { UNITS3 } from '../data/courseData3'
+import { loadCourseCurriculum } from '../data/lessonContent'
+import LESSON_REGISTRY from '../courses/registry'
+import { toAr } from '../utils/arabic'
+
+function countRegistryExercises() {
+  let count = 0
+  Object.values(LESSON_REGISTRY).forEach(units => {
+    Object.values(units).forEach(lesson => {
+      lesson.blocks.forEach(b => { if (b.exercise) count++ })
+    })
+  })
+  return count
+}
+
+function computeStats() {
+  const u1 = loadCourseCurriculum('arabic-grammar-1', UNITS)
+  const u2 = loadCourseCurriculum('arabic-grammar-2', UNITS2)
+  const u3 = loadCourseCurriculum('arabic-grammar-3', UNITS3)
+  const all = [...u1, ...u2, ...u3]
+  const totalUnits = all.length
+  const totalLessons = all.reduce((s, u) => s + u.lessons.length, 0)
+  let totalExercises = countRegistryExercises()
+  try {
+    const ex = JSON.parse(localStorage.getItem('nw_exercises') || '{}')
+    totalExercises += Object.values(ex).reduce((s, arr) => s + arr.length, 0)
+  } catch { /* ignore persistence errors */ }
+  return { totalUnits, totalLessons, totalExercises }
+}
+
+export default function Hero({ onLesson, onAuth }) {
+  const [stats, setStats] = useState(computeStats)
+  const { totalUnits, totalLessons, totalExercises } = stats
+
+  useEffect(() => {
+    const refresh = () => setStats(computeStats())
+    window.addEventListener('storage', refresh)
+    window.addEventListener('nw_exercises_updated', refresh)
+    return () => {
+      window.removeEventListener('storage', refresh)
+      window.removeEventListener('nw_exercises_updated', refresh)
+    }
+  }, [])
   return (
     <section id="top" style={{
       minHeight: '100vh',
@@ -88,9 +133,9 @@ export default function Hero({ onLesson }) {
 
         {/* Buttons */}
         <div className="fu5" style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 56 }}>
-          <a href="#waitlist" className="btn btn-primary" style={{ fontSize: 15, padding: '12px 28px' }}>
-            انضم للقائمة المبكّرة
-          </a>
+          <button onClick={onAuth} className="btn btn-primary" style={{ fontSize: 15, padding: '12px 28px' }}>
+            ابدأ مجاناً
+          </button>
           <button onClick={onLesson} className="btn btn-outline" style={{ fontSize: 15, padding: '12px 28px' }}>
             جرّب درساً الآن
           </button>
@@ -99,18 +144,18 @@ export default function Hero({ onLesson }) {
         {/* Stats bar */}
         <div className="fu6 hero-stats">
           <div className="stat-item">
-            <span className="stat-num">٨</span>
-            <span className="stat-lbl">وحدات دراسية</span>
+            <span className="stat-num">{toAr(totalUnits)}</span>
+            <span className="stat-lbl">وحدة دراسية</span>
           </div>
           <div className="stat-divider" />
           <div className="stat-item">
-            <span className="stat-num">+٥٠</span>
+            <span className="stat-num">{toAr(totalLessons)}</span>
+            <span className="stat-lbl">درساً</span>
+          </div>
+          <div className="stat-divider" />
+          <div className="stat-item">
+            <span className="stat-num">{toAr(totalExercises)}</span>
             <span className="stat-lbl">تمريناً تفاعلياً</span>
-          </div>
-          <div className="stat-divider" />
-          <div className="stat-item">
-            <span className="stat-num">٠٪</span>
-            <span className="stat-lbl">حفظاً أعمى</span>
           </div>
         </div>
       </div>

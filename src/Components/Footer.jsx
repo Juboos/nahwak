@@ -35,7 +35,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <span style={{ fontSize: 13, color: 'var(--warm)' }}>
-          © ٢٠٢٥ نحوك
+          © ٢٠٢٦ نحوك
         </span>
       </div>
     </footer>

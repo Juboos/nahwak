@@ -1,0 +1,22 @@
+# Netlify configuration for the نحوك SPA
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Single-page-app fallback: let React Router handle deep links / refreshes
+# (without this, /dashboard, /course, etc. 404 on a hard refresh).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Security headers applied to every response.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://accounts.google.com; frame-src https://accounts.google.com; base-uri 'self'; form-action 'self'"
